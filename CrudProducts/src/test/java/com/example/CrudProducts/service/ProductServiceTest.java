@@ -36,7 +36,7 @@ public class ProductServiceTest {
     }
 
 
-    /*****************TEST PARA OBTENER PRODUCTOS*****************/
+                      //Test-Obtener productos//
     @Test
     public  void testGetProducts() {
         Product product = new Product(12L, "SKU001", "Description1", 100.0, true);
@@ -48,29 +48,29 @@ public class ProductServiceTest {
     }
 
 
-    /*****************TEST PARA ELIMINAR PRODUCTO*****************/
+                        //TEST-Eliminar producto//
     @Test
     public void testDeleteProduct(){
         Long productId = 12L;
         Product product = new Product();
         product.setId(productId);
 
-        // Configurar el comportamiento del repositorio
+                 //Config. comportamiento repositorio//
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        // Llamar al método a probar
+                 // Llamado método probar//
         ResponseEntity<Object> response = productService.deleteProduct(productId);
 
-        // Verificar el resultado
+                  // Verifica resultado//
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Product deleted successfully", response.getBody());
+        assertEquals("Producto eliminado exitosamente", response.getBody());
 
-        // Verificar si el método deleteById fue llamado con el ID correcto
+                   //Verifica si método deleteById fue llamado correctamente por Id//
         verify(productRepository, times(1)).deleteById(productId);
     }
 
 
-    /*****************TEST PARA CREAR PRODUCTO*****************/
+                            //Test-Crear producto//
     @Test
     public void testNewProduct() {
         // Crear producto ejemplo
@@ -78,21 +78,21 @@ public class ProductServiceTest {
         product.setSku("ABC123");
         product.setName("Test Product");
         product.setPrice(10.0);
-        product.setStatus(true); // Cambiar a tipo Boolean
+        product.setStatus(true); //Cambia a Boolean//
 
-        // Llamar al método a probar
+                  //Llamado método a probar//
         ResponseEntity<Object> response = productService.newProduct(product);
 
-        // Verificar el resultado
+                       //Verificar el resultado//
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Product created successfully", response.getBody());
+        assertEquals("Producto creado exitosamente", response.getBody());
 
-        // Verificar si el método save fue llamado con el producto correcto
+        //Verifica si método save fue llamado correctamente//
         verify(productRepository, times(1)).save(product);
     }
 
 
-    /*****************TEST PARA ACTUALIZAR PRODUCTO*****************/
+                     //Test-Actualizar producto//
     @Test
     public void testUpdateProduct() {
         // Creación de producto ejemplo actual
@@ -102,9 +102,9 @@ public class ProductServiceTest {
         existingProduct.setSku("ABC123");
         existingProduct.setName("Existing Product");
         existingProduct.setPrice(10.0);
-        existingProduct.setStatus(true); // Cambiar a tipo Boolean
+        existingProduct.setStatus(true); //Cambia a Boolean//
 
-        // Creacion de producto ejemplo actualizado
+             //Crea producto ejemplo actualizado//
         Product updatedProduct = new Product();
         updatedProduct.setId(id);
         updatedProduct.setSku("XYZ789");
@@ -112,21 +112,21 @@ public class ProductServiceTest {
         updatedProduct.setPrice(20.0);
         updatedProduct.setStatus(false); // Cambiar a tipo Boolean
 
-        // Simular el comportamiento del repositorio
+              //Simula el comportamiento del repositorio//
         when(productRepository.findById(id)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
 
-        // Llamar al método a probar
+                          //Llamar al método a probar//
         ResponseEntity<Object> response = productService.updateProduct(id, updatedProduct);
 
-        // Verificar el resultado
+                          //Verificar el resultado//
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Product updated successfully", response.getBody());
+        assertEquals("Producto actualizado correctamente", response.getBody());
 
-        // Verificar si el método save fue llamado con el producto actualizado
+            //Verifica si el método save fue llamado correctamente//
         verify(productRepository, times(1)).save(existingProduct);
 
-        // Verificar los atributos del producto actualizado
+                 //Verifica atributos de producto actualizado//
         assertEquals("XYZ789", existingProduct.getSku());
         assertEquals("Updated Product", existingProduct.getName());
         assertEquals(20.0, existingProduct.getPrice());

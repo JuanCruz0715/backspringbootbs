@@ -23,7 +23,7 @@
 
 	<modules>
 		<module>CrudProducts</module>
-		<module>a</module>
+		<module>CrudOrders</module>
 	</modules>
 
 	<dependencyManagement>
